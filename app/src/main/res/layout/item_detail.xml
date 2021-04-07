@@ -21,12 +21,29 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/image_height"
             android:adjustViewBounds="true"
+            android:background="@color/purple_700"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
-            android:background="@color/purple_700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/price"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/text_margin"
+            android:layout_marginBottom="@dimen/item_detail_price_margin"
+            android:background="@drawable/list_item_price_background"
+            android:paddingHorizontal="@dimen/badge_horizontal_padding"
+            android:paddingVertical="@dimen/badge_vertical_padding"
+            android:text="@{viewModel.pirateShip.price}"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/image"
+            app:layout_constraintEnd_toEndOf="@+id/image"
+            tools:text="2599" />
 
         <TextView
             android:id="@+id/title"
@@ -37,9 +54,9 @@
             android:layout_marginTop="@dimen/text_vertical_margin"
             android:layout_marginEnd="@dimen/text_margin"
             android:text="@{viewModel.pirateShip.title}"
-            android:visibility="@{viewModel.pirateShip == null || viewModel.pirateShip.title.empty ? View.GONE : View.VISIBLE}"
             android:textAlignment="viewStart"
             android:textIsSelectable="true"
+            android:visibility="@{viewModel.pirateShip == null || viewModel.pirateShip.title.empty ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"

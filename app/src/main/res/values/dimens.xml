@@ -10,6 +10,7 @@
     <dimen name="image_height">250dp</dimen>
     <dimen name="card_radius">6dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
+    <dimen name="item_detail_price_margin">16dp</dimen>
 
 
 </resources>

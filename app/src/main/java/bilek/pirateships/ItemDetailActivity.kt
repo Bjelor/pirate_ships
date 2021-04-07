@@ -49,10 +49,6 @@ class ItemDetailActivity : AppCompatActivity() {
     viewModel.clickEvent.observe(this) { text ->
       showGreetingAlertDialog(text)
     }
-
-    viewModel.pirateShip.observe(this) { pirateShip ->
-      pirateShip?.price?.let { title = resources.getString(R.string.title_item_detail, it) }
-    }
   }
 
   private fun showGreetingAlertDialog(text: String) {
