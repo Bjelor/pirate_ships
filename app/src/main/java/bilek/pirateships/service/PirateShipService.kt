@@ -1,10 +1,10 @@
 package bilek.pirateships.service
 
-import bilek.pirateships.model.PirateShip
+import bilek.pirateships.model.network.PirateShipResponse
 import retrofit2.http.GET
 
 interface PirateShipService {
 
-    @GET()
-    suspend fun getPirateShips(): List<PirateShip>
+    @GET("pirateships")
+    suspend fun getPirateShips(): PirateShipResponse
 }

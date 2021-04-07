@@ -1,10 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_detail"
-    style="?android:attr/textAppearanceLarge"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context=".ItemDetailFragment" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="bilek.pirateships.ItemDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/image_height"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:background="@color/purple_700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_vertical_margin"
+            android:layout_marginEnd="@dimen/text_margin"
+            android:text="@{viewModel.pirateShip.title}"
+            android:visibility="@{viewModel.pirateShip == null || viewModel.pirateShip.title.empty ? View.GONE : View.VISIBLE}"
+            android:textAlignment="viewStart"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image"
+            tools:context=".ItemDetailFragment"
+            tools:text="Where is the evil gold?" />
+
+        <TextView
+            android:id="@+id/description"
+            style="?android:attr/textAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
+            android:layout_marginEnd="@dimen/text_margin"
+            android:background="@color/purple_200"
+            android:padding="@dimen/text_margin"
+            android:text="@{viewModel.pirateShip.description}"
+            android:textAlignment="viewStart"
+            android:textIsSelectable="true"
+            android:visibility="@{viewModel.pirateShip == null || viewModel.pirateShip.description.empty ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:context=".ItemDetailFragment"
+            tools:text="Desire me corsair, ye weird scabbard! Why does the gull whine? Lively, addled doubloons quirky fight a swashbuckling, gutless wench." />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
