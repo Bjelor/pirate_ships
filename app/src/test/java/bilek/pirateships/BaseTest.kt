@@ -41,4 +41,8 @@ abstract class BaseTest {
   ) = kotlinx.coroutines.test.runBlockingTest(testCoroutineDispatcher, testBody)
 
   protected inline fun <reified T : Any> mock(): T = Mockito.mock(T::class.java)
+
+  protected inline fun <reified T> any(): T = org.mockito.kotlin.any()
+
+  protected fun verifyZeroInteractions(mock: Any) = org.mockito.kotlin.verifyZeroInteractions(mock)
 }
