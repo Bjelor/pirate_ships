@@ -1,4 +1,4 @@
-package bilek.pirateships.service
+package bilek.pirateships.repository.service
 
 import bilek.pirateships.model.network.PirateShipResponse
 import retrofit2.http.GET

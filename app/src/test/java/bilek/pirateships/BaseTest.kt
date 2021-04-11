@@ -10,32 +10,35 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
+import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.mockito.junit.MockitoJUnitRunner
 
-open class BaseTest {
+@RunWith(MockitoJUnitRunner::class)
+abstract class BaseTest {
 
-    @JvmField
-    @Rule
-    val rule = InstantTaskExecutorRule()
+  @JvmField
+  @Rule
+  val rule = InstantTaskExecutorRule()
 
-    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+  protected val testCoroutineDispatcher = TestCoroutineDispatcher()
 
-    @CallSuper
-    @Before
-    open fun setUp() {
-        Dispatchers.setMain(testCoroutineDispatcher)
-    }
+  @CallSuper
+  @Before
+  open fun setUp() {
+    Dispatchers.setMain(testCoroutineDispatcher)
+  }
 
-    @CallSuper
-    @After
-    open fun tearDown() {
-        Dispatchers.resetMain()
-        testCoroutineDispatcher.cleanupTestCoroutines()
-    }
+  @CallSuper
+  @After
+  open fun tearDown() {
+    Dispatchers.resetMain()
+    testCoroutineDispatcher.cleanupTestCoroutines()
+  }
 
-    protected inline fun <reified T : Any> mock(): T = Mockito.mock(T::class.java)
+  protected fun runBlockingTest(
+          testBody: suspend TestCoroutineScope.() -> Unit,
+  ) = kotlinx.coroutines.test.runBlockingTest(testCoroutineDispatcher, testBody)
 
-    protected fun runBlockingTest(
-        testBody: suspend TestCoroutineScope.() -> Unit
-    ) = kotlinx.coroutines.test.runBlockingTest(testCoroutineDispatcher, testBody)
+  protected inline fun <reified T : Any> mock(): T = Mockito.mock(T::class.java)
 }

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "pirate_ship")
 data class PirateShipEntity(
     @PrimaryKey val id: Long,
-    val title: String?,
+    val title: String,
     val description: String,
     val price: Int,
     val image: String?,

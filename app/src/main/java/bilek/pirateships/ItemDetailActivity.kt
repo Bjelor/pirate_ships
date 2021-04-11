@@ -10,6 +10,9 @@ import androidx.databinding.DataBindingUtil
 import bilek.pirateships.databinding.ActivityItemDetailBinding
 import bilek.pirateships.utilities.dependencyContainer
 
+/**
+ * Just realized this thing is completely bypassed on tablets, hence no FAB there, sorry -_-
+ */
 class ItemDetailActivity : AppCompatActivity() {
 
   private val viewModel: ItemDetailViewModel by viewModels {

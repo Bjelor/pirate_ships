@@ -6,8 +6,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.NestedScrollView
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import bilek.pirateships.databinding.ActivityItemListBinding
 import bilek.pirateships.model.PirateShip
 import bilek.pirateships.utilities.dependencyContainer
 
@@ -27,6 +29,8 @@ class ItemListActivity : AppCompatActivity() {
      */
     private var twoPane: Boolean = false
 
+    private lateinit var binding: ActivityItemListBinding
+
     private val viewModel: ItemListViewModel by viewModels {
         ItemListViewModel.Factory(dependencyContainer.pirateShipRepository)
     }
@@ -37,26 +41,20 @@ class ItemListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_item_list)
+        setSupportActionBar(binding.toolbar)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.title = title
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
-        if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            twoPane = true
-        }
+        twoPane = binding.itemListContainer.itemDetailContainer != null
 
-        setupRecyclerView(findViewById(R.id.item_list))
+        setupRecyclerView()
         setupObservers()
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = adapter
+    private fun setupRecyclerView() {
+        binding.itemListContainer.itemList.adapter = adapter
     }
 
     private fun setupObservers() {

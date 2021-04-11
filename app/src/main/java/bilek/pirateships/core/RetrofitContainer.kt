@@ -1,6 +1,6 @@
 package bilek.pirateships.core
 
-import bilek.pirateships.service.PirateShipService
+import bilek.pirateships.repository.service.PirateShipService
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 

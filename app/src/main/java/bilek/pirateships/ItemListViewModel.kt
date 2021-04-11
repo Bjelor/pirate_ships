@@ -1,34 +1,43 @@
 package bilek.pirateships
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import bilek.pirateships.model.PirateShip
-import bilek.pirateships.utilities.SingleLiveEvent
 import bilek.pirateships.repository.PirateShipsRepository
+import bilek.pirateships.utilities.SingleLiveEvent
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 
 class ItemListViewModel(pirateShipsRepository: PirateShipsRepository) : ViewModel() {
 
-    private val pirateShipsFlow: StateFlow<List<PirateShip>> =
-        pirateShipsRepository.fetchPirateShips()
-            .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+  private val pirateShipsFlow: StateFlow<List<PirateShip>> =
+          pirateShipsRepository.fetchPirateShips()
+                  .onCompletion { isLoading.value = false }
+                  .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val pirateShips: LiveData<List<PirateShip>> = pirateShipsFlow
-        .asLiveData()
+  val isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    val clickEvent: SingleLiveEvent<Long> = SingleLiveEvent()
+  val pirateShips: LiveData<List<PirateShip>> = pirateShipsFlow
+          .asLiveData()
 
-    fun onItemClick(id: Long) {
-        clickEvent.value = id
-    }
+  val clickEvent: SingleLiveEvent<Long> = SingleLiveEvent()
 
-    class Factory(
-        private val pirateShipsRepository: PirateShipsRepository,
-    ) :
-        ViewModelProvider.Factory {
+  fun onItemClick(id: Long) {
+    clickEvent.value = id
+  }
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+  class Factory(
+          private val pirateShipsRepository: PirateShipsRepository,
+  ) :
+          ViewModelProvider.Factory {
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
             ItemListViewModel(pirateShipsRepository) as T
-    }
+  }
 }
