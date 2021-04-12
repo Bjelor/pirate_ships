@@ -1,16 +1,15 @@
 package bilek.pirateships
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.util.Pair
+import android.view.Window
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import bilek.pirateships.databinding.ActivityItemListBinding
-import bilek.pirateships.model.PirateShip
 import bilek.pirateships.utilities.dependencyContainer
 
 /**

@@ -12,56 +12,57 @@ import com.bumptech.glide.Glide
 
 class ItemDetailFragment : Fragment() {
 
-  private val viewModel: ItemDetailViewModel by activityViewModels {
-    ItemDetailViewModel.Factory(dependencyContainer.pirateShipRepository)
-  }
+    private val viewModel: ItemDetailViewModel by activityViewModels {
+        ItemDetailViewModel.Factory(dependencyContainer.pirateShipRepository)
+    }
 
-  private lateinit var binding: ItemDetailBinding
+    private lateinit var binding: ItemDetailBinding
 
-  override fun onCreateView(
-          inflater: LayoutInflater,
-          container: ViewGroup?,
-          savedInstanceState: Bundle?,
-  ): View {
-    binding = ItemDetailBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        binding = ItemDetailBinding.inflate(inflater, container, false)
 
     return binding.root
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    binding.lifecycleOwner = this
-    binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
-    setupArguments()
-    setupObservers()
-  }
+        setupArguments()
+        setupObservers()
+    }
 
-  private fun setupArguments() {
-    if (requireActivity() is ItemListActivity) {
-      arguments?.let {
-        if (it.containsKey(ARG_ITEM_ID)) {
-          viewModel.requestPirateShip(it.getLong(ARG_ITEM_ID, -1))
+    private fun setupArguments() {
+        binding.image.transitionName = "image_${arguments?.getLong(ARG_ITEM_ID)}"
+
+        if (requireActivity() is ItemListActivity) {
+            arguments?.let {
+                if (it.containsKey(ARG_ITEM_ID)) {
+                    viewModel.requestPirateShip(it.getLong(ARG_ITEM_ID, -1))
+                }
+            }
         }
-      }
     }
-  }
 
-  private fun setupObservers() {
-    val activity = requireActivity()
-
-    viewModel.pirateShip.observe(activity) { pirateShip ->
-      if (pirateShip != null)
-        Glide.with(activity).load(pirateShip.image).into(binding.image)
+    private fun setupObservers() {
+        viewModel.pirateShip.observe(viewLifecycleOwner) { pirateShip ->
+            if (pirateShip != null) {
+                Glide.with(requireContext()).load(pirateShip.image).into(binding.image)
+            }
+        }
     }
-  }
 
-  companion object {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    const val ARG_ITEM_ID = "item_id"
-  }
+    companion object {
+        /**
+         * The fragment argument representing the item ID that this fragment
+         * represents.
+         */
+        const val ARG_ITEM_ID = "item_id"
+    }
 }

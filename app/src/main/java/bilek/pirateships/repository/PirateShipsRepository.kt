@@ -12,33 +12,33 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class PirateShipsRepository(
-        private val pirateShipsService: PirateShipService,
-        private val pirateShipDao: PirateShipDao,
-        private val pirateShipFactory: PirateShipFactory,
-        private val pirateShipEntityFactory: PirateShipEntityFactory,
+    private val pirateShipsService: PirateShipService,
+    private val pirateShipDao: PirateShipDao,
+    private val pirateShipFactory: PirateShipFactory,
+    private val pirateShipEntityFactory: PirateShipEntityFactory,
 ) {
 
-  fun fetchPirateShipById(id: Long): Flow<PirateShip?> = flow {
-    val shipEntity = pirateShipDao.getById(id) ?: downloadPirateShips().find { it.id == id }
-    val ship = shipEntity?.let { pirateShipFactory.fromEntity(it) }
+    fun fetchPirateShipById(id: Long): Flow<PirateShip?> = flow {
+        val shipEntity = pirateShipDao.getById(id) ?: downloadPirateShips().find { it.id == id }
+        val ship = shipEntity?.let { pirateShipFactory.fromEntity(it) }
 
-    emit(ship)
-  }.flowOn(Dispatchers.IO)
+        emit(ship)
+    }.flowOn(Dispatchers.IO)
 
-  fun fetchPirateShips(): Flow<List<PirateShip>> = flow {
-    val shipEntities = pirateShipDao.getAll().takeIf { it.isNotEmpty() }
+    fun fetchPirateShips(): Flow<List<PirateShip>> = flow {
+        val shipEntities = pirateShipDao.getAll().takeIf { it.isNotEmpty() }
             ?: downloadPirateShips()
-    val ships = pirateShipFactory.fromEntities(shipEntities)
+        val ships = pirateShipFactory.fromEntities(shipEntities)
 
-    emit(ships)
-  }.flowOn(Dispatchers.IO)
+        emit(ships)
+    }.flowOn(Dispatchers.IO)
 
-  private suspend fun downloadPirateShips(): List<PirateShipEntity> {
-    val response = pirateShipsService.getPirateShips()
-    val ships = pirateShipEntityFactory.fromResponse(response)
+    private suspend fun downloadPirateShips(): List<PirateShipEntity> {
+        val response = pirateShipsService.getPirateShips()
+        val ships = pirateShipEntityFactory.fromResponse(response)
 
-    pirateShipDao.insertAll(ships)
+        pirateShipDao.insertAll(ships)
 
-    return ships
-  }
+        return ships
+    }
 }

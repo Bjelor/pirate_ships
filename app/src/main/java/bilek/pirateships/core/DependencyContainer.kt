@@ -11,24 +11,24 @@ import bilek.pirateships.repository.service.PirateShipService
 // Dagger or Koin would be better options but I've never tried to do this manually, so there you go.
 class DependencyContainer(application: Application) {
 
-  private val retrofitContainer: RetrofitContainer = RetrofitContainer()
+    private val retrofitContainer: RetrofitContainer = RetrofitContainer()
 
-  private val pirateShipsService: PirateShipService = retrofitContainer.pirateShipsService
+    private val pirateShipsService: PirateShipService = retrofitContainer.pirateShipsService
 
-  private val pirateShipDatabase: PirateShipDatabase = Room.databaseBuilder(
-          application,
-          PirateShipDatabase::class.java,
-          "pirate-ship-database"
-  ).build()
+    private val pirateShipDatabase: PirateShipDatabase = Room.databaseBuilder(
+        application,
+        PirateShipDatabase::class.java,
+        "pirate-ship-database"
+    ).build()
 
-  private val pirateShipFactory: PirateShipFactory = PirateShipFactory()
+    private val pirateShipFactory: PirateShipFactory = PirateShipFactory()
 
-  private val pirateShipEntityFactory: PirateShipEntityFactory = PirateShipEntityFactory()
+    private val pirateShipEntityFactory: PirateShipEntityFactory = PirateShipEntityFactory()
 
-  val pirateShipRepository: PirateShipsRepository = PirateShipsRepository(
-          pirateShipsService,
-          pirateShipDatabase.pirateShipDao(),
-          pirateShipFactory,
-          pirateShipEntityFactory,
-  )
+    val pirateShipRepository: PirateShipsRepository = PirateShipsRepository(
+        pirateShipsService,
+        pirateShipDatabase.pirateShipDao(),
+        pirateShipFactory,
+        pirateShipEntityFactory,
+    )
 }
